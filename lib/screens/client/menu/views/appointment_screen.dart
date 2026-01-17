@@ -6,8 +6,10 @@ import 'package:face2face/models/appointment.dart';
 import 'package:face2face/models/cosmetologist.dart';
 
 import '../../../../components/const/app_colors.dart';
+import '../../../../components/widgets/my_button.dart';
 import '../../../../models/procedure.dart';
 import '../../../../services/appointment/appointment.dart';
+import '../components/warning_message.dart';
 
 class AppointmentModal extends StatefulWidget {
   final Procedure procedure;
@@ -30,6 +32,7 @@ class _AppointmentModalState extends State<AppointmentModal> {
   List<DateTime> availableDates = [];
   List<Appointment> appointmentsForDate = [];
   bool loading = false;
+  Appointment? selectedAppointment;
 
   @override
   void initState() {
@@ -44,9 +47,13 @@ class _AppointmentModalState extends State<AppointmentModal> {
     final allAppointments = await widget.appointmentRepository
         .getAppointmentsByCosmetologist(widget.cosmetologist.id);
 
+
     final uniqueDates = <DateTime>{};
     for (var appt in allAppointments) {
-      uniqueDates.add(DateTime.parse(appt.date));
+      if (appt.status == true)
+      {
+        uniqueDates.add(DateTime.parse(appt.date));
+      }
     }
 
     setState(() {
@@ -81,10 +88,18 @@ class _AppointmentModalState extends State<AppointmentModal> {
     return Container(
       padding: EdgeInsets.only(top: 16, left: 16, right: 16),
       height: 500,
+      decoration: BoxDecoration(
+        color: MyColors.card,
+        borderRadius: BorderRadius.circular(25.0),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Даты:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('Даты:', style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: MyColors.textPrimary,
+          ),),
           SizedBox(height: 10),
           SizedBox(
             height: 36,
@@ -122,7 +137,11 @@ class _AppointmentModalState extends State<AppointmentModal> {
             ),
           ),
           SizedBox(height: 16),
-          Text('Косметолог:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('Косметолог:', style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: MyColors.textPrimary,
+          )),
           SizedBox(height: 10),
           Row(
             children: [
@@ -136,47 +155,57 @@ class _AppointmentModalState extends State<AppointmentModal> {
                 children: [
                   Text(
                     widget.cosmetologist.username,
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.star, color: Colors.orange, size: 16),
-                      Text('5.0 (10)', style: TextStyle(fontSize: 15)),
-                    ],
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: MyColors.textSecondary,
+                    ),
                   ),
                 ],
               ),
             ],
           ),
           SizedBox(height: 16),
-          Text('Процедура:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('Процедура:', style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: MyColors.textPrimary,
+          )),
           SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.access_alarm, size: 18, color: Colors.grey),
+              Icon(Icons.access_alarm, size: 18, color: MyColors.textSecondary,),
               SizedBox(width: 6),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.procedure.name,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: MyColors.textSecondary,
+                    ),
                   ),
                   Text(
                     'Цена: ${widget.procedure.price} BYN',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                    style: TextStyle(fontSize: 14,    color: MyColors.textSecondary,),
                   ),
                   Text(
                     'Продолжительность: ${widget.procedure.duration}',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                    style: TextStyle(fontSize: 14,     color: MyColors.textSecondary,),
                   ),
                 ],
               ),
             ],
           ),
           SizedBox(height: 16),
-          Text('Время:', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text('Время:', style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: MyColors.textPrimary,
+          )),
           SizedBox(height: 10),
           loading
               ? Center(child: CircularProgressIndicator())
@@ -184,24 +213,12 @@ class _AppointmentModalState extends State<AppointmentModal> {
             spacing: 10,
             children: appointmentsForDate.where((appt) => appt.status).map(
                   (appt) {
-                final isSelected = false;
+                    final isSelected = selectedAppointment?.id == appt.id;
                 return GestureDetector(
-                  onTap: () async {
-                    setState(() => loading = true);
-                    try {
-                      final bookingRepository = BookingRepository();
-                      await bookingRepository.createBooking(appt.id);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Бронирование успешно создано!')),
-                      );
-                      Navigator.pop(context);
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Ошибка при бронировании: $e')),
-                      );
-                    } finally {
-                      setState(() => loading = false);
-                    }
+                  onTap: () {
+                    setState(() {
+                      selectedAppointment = appt;
+                    });
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(
@@ -209,7 +226,7 @@ class _AppointmentModalState extends State<AppointmentModal> {
                       horizontal: 16,
                     ),
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.blue : Colors.grey[200],
+                      color: isSelected ? MyColors.accent : Colors.grey[200],
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
@@ -225,6 +242,31 @@ class _AppointmentModalState extends State<AppointmentModal> {
               },
             ).toList(),
           ),
+          SizedBox(height: 25),
+          MyButton(onChange: () async {
+            if (selectedAppointment == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Пожалуйста, выберите время')),
+              );
+              return;
+            }
+            setState(() => loading = true);
+            try {
+              final bookingRepository = BookingRepository();
+              await bookingRepository.createBooking(selectedAppointment!.id, widget.procedure.id);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Бронирование успешно создано!')),
+              );
+              Navigator.pop(context);
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Ошибка при бронировании: $e')),
+              );
+            } finally {
+              setState(() => loading = false);
+              WarningMessage.show(context);
+            }
+          }, buttonName: "Подтвердить запись"),
         ],
       ),
     );

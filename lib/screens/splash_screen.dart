@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../services/settings.dart';
-import 'main_screen.dart';
+import 'client/main_screen.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -81,6 +81,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       }
     });
   }
+  //
+  // Widget build(BuildContext context, {bool debug = false}) {
+  //   return const SizedBox.shrink();
+  // }
 
   void _startTyping() {
     Timer.periodic(const Duration(milliseconds: 150), (timer) {

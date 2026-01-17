@@ -22,7 +22,7 @@ class ProcedureList extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: MyColors.card,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -38,7 +38,7 @@ class ProcedureList extends StatelessWidget {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: Color(0xFFF5F5F5),
+                  color: MyColors.accentLight,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Icon(Icons.spa, color: MyColors.accent),
@@ -50,12 +50,19 @@ class ProcedureList extends StatelessWidget {
                   children: [
                     Text(
                       procedure.name,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: MyColors.textPrimary,
+                      ),
                     ),
                     SizedBox(height: 4),
                     Text(
                       '${procedure.price} BYN • ${_formatDuration(procedure.duration)}',
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: MyColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
@@ -65,16 +72,22 @@ class ProcedureList extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 6, horizontal: 16),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: MyColors.accent,
+                    borderRadius: BorderRadius.circular(30),
                     gradient: const LinearGradient(
                       colors: [
                         MyColors.accent,
-                        Color(0xFFEDDAB5),
+                        MyColors.accentLight,
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: MyColors.accent.withOpacity(0.25),
+                        blurRadius: 12,
+                        offset: Offset(0, 6),
+                      ),
+                    ],
                   ),
                   child: Text(
                     'Записаться',

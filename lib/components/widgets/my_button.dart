@@ -10,24 +10,39 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
+    return GestureDetector(
+      onTap: () {
         onChange();
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: MyColors.accent,
-        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 23),
-        textStyle: TextStyle(fontSize: 18),
-        minimumSize: Size(170, 50),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-      child: Text(
-        buttonName,
-        style: const TextStyle(
-          fontFamily: 'Manrope',
-          fontSize: 18,
-          color: Colors.white,
-          fontWeight: FontWeight.bold
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          gradient: const LinearGradient(
+            colors: [
+              MyColors.accent,
+              MyColors.accentLight,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: MyColors.accent.withOpacity(0.25),
+              blurRadius: 12,
+              offset: Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            buttonName,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

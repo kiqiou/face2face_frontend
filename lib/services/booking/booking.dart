@@ -25,7 +25,24 @@ class BookingRepository {
     throw Exception('Ошибка получения бронирований');
   }
 
-  Future<void> createBooking(int appointmentId) async {
+  Future<List<Booking>> getCosmetologistBookings() async {
+    final access = await authStorage.getAccessToken();
+    if (access == null) return [];
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/get_lists/get_cosmetologist_bookings/'),
+      headers: {'Authorization': 'Bearer $access'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as List;
+      return data.map((e) => Booking.fromJson(e)).toList();
+    }
+
+    throw Exception('Ошибка получения бронирований косметолога');
+  }
+
+  Future<void> createBooking(int appointmentId, int procedureId) async {
     final access = await authStorage.getAccessToken();
     if (access == null) throw Exception('Неавторизованный');
 
@@ -35,7 +52,7 @@ class BookingRepository {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $access',
       },
-      body: jsonEncode({'appointment': appointmentId}),
+      body: jsonEncode({'appointment_id': appointmentId, 'procedure_id': procedureId}),
     );
 
     if (response.statusCode != 201) {

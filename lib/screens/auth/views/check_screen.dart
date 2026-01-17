@@ -8,7 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/auth/authentication_bloc.dart';
 import '../../../bloc/auth/authentication_event.dart';
 import '../../../bloc/auth/authentication_state.dart';
-import '../../main_screen.dart';
+import '../../cosmetologist/main_screen.dart';
+import '../../client/main_screen.dart';
 
 class CheckScreen extends StatefulWidget {
   final String phone;
@@ -79,10 +80,31 @@ class _CheckScreenState extends State<CheckScreen> {
         }
 
         if (state.user != null) {
-          Navigator.pushReplacement(
-            context,
-            CupertinoPageRoute(builder: (_) => const MainScreen()),
-          );
+          if (state.user!.role == 1) {
+            Navigator.pushReplacement(
+              context,
+              CupertinoPageRoute(builder: (_) => const UserMainScreen()),
+            );
+          } else if (state.user!.role == 2) {
+            Navigator.pushReplacement(
+              context,
+              CupertinoPageRoute(builder: (_) => const CosmetologistMainScreen()),
+            );
+          } else {
+            showCupertinoDialog(
+              context: context,
+              builder: (_) => CupertinoAlertDialog(
+                title: const Text('Ошибка'),
+                content: const Text('Неизвестная роль пользователя'),
+                actions: [
+                  CupertinoDialogAction(
+                    child: const Text('Ок'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            );
+          }
         }
       },
       builder: (context, state) {

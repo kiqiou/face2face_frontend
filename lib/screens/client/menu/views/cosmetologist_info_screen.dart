@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../bloc/auth/helper/helper.dart';
+import '../../../../components/const/app_colors.dart';
 import '../../../../models/cosmetologist.dart';
 import '../../../../models/procedure.dart';
 import '../../../../services/appointment/appointment.dart';
@@ -46,9 +47,8 @@ class _CosmetologistInfoScreenState extends State<CosmetologistInfoScreen> {
     final cosmetologist = widget.cosmetologist;
 
     return CupertinoPageScaffold(
-      backgroundColor: Color(0xFFF2F2F2),
+      backgroundColor: MyColors.background,
       child: SafeArea(
-        top: false,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -58,7 +58,7 @@ class _CosmetologistInfoScreenState extends State<CosmetologistInfoScreen> {
               Container(
                 width: 360,
                 decoration: BoxDecoration(
-                  color: CupertinoColors.white,
+                  color: MyColors.card,
                   borderRadius: BorderRadius.circular(25.0),
                 ),
                 child: Column(children: [
@@ -76,25 +76,36 @@ class _CosmetologistInfoScreenState extends State<CosmetologistInfoScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 17),
                   Center(
                     child: Text(
                       cosmetologist.username,
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                        color: MyColors.textPrimary,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 4),
                   Center(
                     child: Text(
                       cosmetologist.specialization,
-                      style: const TextStyle(fontSize: 18, color: CupertinoColors.systemGrey),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: MyColors.textSecondary,
+                      ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
                     child: Text(
                       cosmetologist.bio,
-                      style: const TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: MyColors.textPrimary,
+                      ),
                       softWrap: true,
                     ),
                   ),
@@ -103,8 +114,13 @@ class _CosmetologistInfoScreenState extends State<CosmetologistInfoScreen> {
               const SizedBox(height: 24),
               Text(
                 'Процедуры:',
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  color: MyColors.textPrimary,
+                ),
               ),
+              const SizedBox(height: 24),
               ProcedureList(procedures: procedures, onTap: (index) {
                 showModalBottomSheet(
                   context: context,

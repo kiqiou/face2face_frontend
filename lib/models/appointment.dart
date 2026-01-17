@@ -1,7 +1,7 @@
 class Appointment {
   final int id;
-  final String date; // YYYY-MM-DD
-  final String time; // HH:MM:SS
+  final String date;
+  final String time;
   final bool status;
 
   Appointment({

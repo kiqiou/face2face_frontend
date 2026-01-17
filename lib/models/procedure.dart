@@ -3,7 +3,7 @@ class Procedure {
   final String name;
   final int price;
   final String duration;
-  final int cosmetologistId; // айди косметолога
+  final int cosmetologistId;
 
   Procedure({
     required this.id,

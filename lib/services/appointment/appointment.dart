@@ -16,13 +16,14 @@ class AppointmentRepository {
     }
     throw Exception('Ошибка получения записей');
   }
+  
 
   Future<void> addAppointment(String date, String time) async {
     final access = await authStorage.getAccessToken();
     if (access == null) throw Exception('Неавторизованный');
 
     final response = await http.post(
-      Uri.parse('$baseUrl/api/appointments/add/'),
+      Uri.parse('$baseUrl/api/appointment/add_appointment/'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $access',
