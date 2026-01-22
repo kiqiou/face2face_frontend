@@ -51,7 +51,7 @@ class UserRepository {
         throw Exception('Неправильный формат ответа сервера: $json');
       }
 
-      return MyUser.fromJson(json['user']);
+      return MyUser.fullFromJson(json);
     } else {
       throw Exception('Ошибка подтверждения кода: ${response.body}');
     }
@@ -80,7 +80,7 @@ class UserRepository {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      return MyUser.fromJson(json);
+      return MyUser.fullFromJson(json);
     } else {
       await authStorage.clear();
       return null;
@@ -101,7 +101,7 @@ class UserRepository {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(respStr);
-      return MyUser.fromJson(json['user']);
+      return MyUser.fullFromJson(json);
     } else {
       throw Exception('Ошибка загрузки аватара: $respStr');
     }

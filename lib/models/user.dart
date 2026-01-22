@@ -4,6 +4,7 @@ class MyUser {
   final String? phone;
   final String? avatarUrl;
   final int? role;
+  final int? cosmetologistId;
 
   MyUser({
     required this.id,
@@ -11,17 +12,30 @@ class MyUser {
     this.phone,
     this.avatarUrl,
     this.role,
+    this.cosmetologistId,
   });
 
-  factory MyUser.fromJson(Map<String, dynamic> json) {
+  factory MyUser.fullFromJson(Map<String, dynamic> json) {
     return MyUser(
-      id: json['id'],
-      username: json['username'],
+      id: json['user']['id'],
+      username: json['user']['username'],
+      phone: json['user']['phone'],
+      avatarUrl: json['user']['avatar_url'],
+      role: json['user']['role'],
+      cosmetologistId: json['cosmetologist_profile']?['id'],
+    );
+  }
+
+  factory MyUser.simpleFromJson(Map<String, dynamic> json) {
+    return MyUser(
+      id: json['id'] ?? 0,
+      username: json['username'] ?? '',
       phone: json['phone'],
       avatarUrl: json['avatar_url'],
       role: json['role'],
     );
   }
 
-  static final empty = MyUser(id: 0, username: '');
+  static final empty = MyUser(id: 0, username: '', cosmetologistId: 0);
+
 }

@@ -1,15 +1,18 @@
 // models/booking.dart
 import 'package:face2face/models/procedure.dart';
+import 'package:face2face/models/user.dart';
 
 class Booking {
   final int id;
+  final MyUser user;
   final Procedure procedure;
   final String cosmetologist;
   final String date;
   final String time;
   final bool status;
 
-  Booking({
+  Booking( {
+    required this.user,
     required this.id,
     required this.procedure,
     required this.cosmetologist,
@@ -21,6 +24,7 @@ class Booking {
   factory Booking.fromJson(Map<String, dynamic> json) {
     return Booking(
       id: json['id'] ?? 0,
+      user: MyUser.simpleFromJson(json['user']),
       procedure: Procedure.fromJson(json['procedure']),
       cosmetologist: json['cosmetologist'] ?? '',
       date: json['date'] ?? '',

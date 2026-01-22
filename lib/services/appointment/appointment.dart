@@ -9,14 +9,16 @@ class AppointmentRepository {
   final AuthStorage authStorage = AuthStorage();
 
   Future<List<Appointment>> getAppointmentsByCosmetologist(int cosmetologistId) async {
+    print(cosmetologistId);
     final response = await http.get(Uri.parse('$baseUrl/api/get_lists/get_appointments/$cosmetologistId/'));
+    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as List;
+      print(data);
       return data.map((e) => Appointment.fromJson(e)).toList();
     }
     throw Exception('Ошибка получения записей');
   }
-  
 
   Future<void> addAppointment(String date, String time) async {
     final access = await authStorage.getAccessToken();
@@ -41,7 +43,7 @@ class AppointmentRepository {
     if (access == null) throw Exception('Неавторизованный');
 
     final response = await http.delete(
-      Uri.parse('$baseUrl/api/appointments/$appointmentId/delete/'),
+      Uri.parse('$baseUrl/api/appointment/delete_appointment/$appointmentId/'),
       headers: {'Authorization': 'Bearer $access'},
     );
 

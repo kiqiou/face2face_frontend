@@ -24,7 +24,7 @@ class _CosmetologistAddAppointmentScreenState extends State<CosmetologistAddAppo
         child: CupertinoDatePicker(
           mode: CupertinoDatePickerMode.date,
           initialDateTime: DateTime.now(),
-          minimumDate: DateTime.now().subtract(Duration(seconds: 1)), // Установите минимум на 1 секунду раньше
+          minimumDate: DateTime.now().subtract(Duration(seconds: 1)),
           onDateTimeChanged: (val) => setState(() => selectedDate = val),
         ),
       ),
@@ -134,7 +134,7 @@ class _CosmetologistAddAppointmentScreenState extends State<CosmetologistAddAppo
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: MyColors.background,  // Задний фон экрана
+      backgroundColor: MyColors.background,
       navigationBar: CupertinoNavigationBar(
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
@@ -169,7 +169,7 @@ class _CosmetologistAddAppointmentScreenState extends State<CosmetologistAddAppo
               ),
               const SizedBox(height: 12),
               CupertinoButton(
-                color: MyColors.accent, // Цвет кнопки
+                color: MyColors.accent,
                 onPressed: _pickDate,
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                 child: Text(
@@ -178,8 +178,6 @@ class _CosmetologistAddAppointmentScreenState extends State<CosmetologistAddAppo
                 ),
               ),
               const SizedBox(height: 24),
-
-              // Заголовок для выбора времени
               Text(
                 'Выберите время:',
                 style: TextStyle(
